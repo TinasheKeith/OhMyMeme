@@ -1,28 +1,40 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <AppBar title="Oh. My. Meme! 😲" />
+    <AppWrapper>
+      <!-- <app-button>hi</app-button> -->
+    </AppWrapper>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import AppBar from "./components/AppBar";
+// import AppButton from "./components/AppButton";
+import AppWrapper from "./components/AppWrapper";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
+    AppBar,
+    // AppButton,
+    AppWrapper
   }
-}
+};
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+@import "./assets/styles/variables.css";
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Chelsea Market", cursive;
+  line-height: 1.4;
+  color: var(--font-color);
+  background-color: var(--background-color);
 }
 </style>
