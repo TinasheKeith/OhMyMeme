@@ -1,6 +1,6 @@
 <template>
   <div>
-    <input :type="file ? file : text" class="text-input" :placeholder="placeholder" />
+    <input type="text" class="text-input" :placeholder="placeholder" />
   </div>
 </template>
 

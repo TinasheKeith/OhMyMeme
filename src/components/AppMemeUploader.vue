@@ -3,11 +3,12 @@
     <h3 class="title">Add a new meme 🆕</h3>
     <label>
       Upload Meme
-      <input type="file" accept="image/*" size="60" />
+      <input type="file" accept="image/*" size="60" @change="onFileChosen" />
     </label>
-    <app-text-input placeholder="Meme Title" />
-    <app-text-input placeholder="Why is this Meme funny?" />
-    <app-button>Houston, we have a meme! 🚀👨‍🚀</app-button>
+    <img v-if="selectedImageUrl" class="preview-image" width="200px" :src="selectedImageUrl" />
+    <app-text-input placeholder="Meme Title" v-model="memeTitle" />
+    <app-text-input placeholder="Why is this Meme funny?" v-model="memeDescription" />
+    <app-button @click.native="onUpload()">Houston, we have a meme! 🚀👨‍🚀</app-button>
   </div>
 </template>
 
@@ -20,6 +21,35 @@ export default {
   components: {
     AppTextInput,
     AppButton
+  },
+  data() {
+    return {
+      selectedImageUrl: null,
+      memeTitle: "",
+      memeDescription: ""
+    };
+  },
+  methods: {
+    onFileChosen(e) {
+      const imageFile = e.target.files[0];
+      const imageFileUrl = URL.createObjectURL(imageFile);
+      this.selectedImageUrl = imageFileUrl;
+    },
+    onUpload() {
+      console.log("onUpload ran!!");
+      let savedMemes = [];
+      savedMemes = localStorage.getItem("savedMemes") || [];
+
+      savedMemes.push({
+        memeTitle: this.memeTitle,
+        imageUrl: this.selectedImageUrl,
+        memeDescription: this.memeDescription
+      });
+
+      localStorage.setItem("savedMemes", savedMemes);
+
+      console.log(localStorage.getItem("savedMemes"));
+    }
   }
 };
 </script>
@@ -42,5 +72,10 @@ label {
 
 input[type="file"] {
   display: none;
+}
+
+.preview-image {
+  max-width: 400px;
+  margin: 2em auto;
 }
 </style>
