@@ -26,7 +26,7 @@ class LocalStorageService {
   }
 
   deleteMeme(position) {
-    const memes = [...this.getMemes()].slice(position, 1);
+    const memes = [...this.getMemes()];
 
     const removeItemWithSlice = (index) => {
       const firstArr = memes.slice(0, index);

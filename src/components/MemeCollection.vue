@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="meme-container" v-if="memes">
+    <div class="meme-container" v-if="getMemes">
       <modal name="edit" @before-open="selectMemeToEdit">
         <div class="edit-modal">
           <h3>Edit your meme entry</h3>
@@ -24,7 +24,7 @@
         </div>
       </modal>
 
-      <app-card :key="meme.index" v-for="(meme, index) in memes">
+      <app-card :key="meme.index" v-for="(meme, index) in getMemes">
         <div class="card-content">
           <img class="card-image" :src="meme.imgUrl" />
           <div class="content-text">
@@ -54,14 +54,15 @@ export default {
     AppCard,
     AppBtn
   },
-  mounted() {
-    const storageService = new LocalStorageService();
-    const memes = storageService.getMemes();
-    this.memes = memes;
+  props: ["memes"],
+  computed: {
+    // to avoid mutating directly
+    getMemes() {
+      return this.memes;
+    }
   },
   data() {
     return {
-      memes: [],
       memeToEditTitle: "",
       memeToEditDescription: "",
       memeToEditUrl: "",
@@ -70,7 +71,7 @@ export default {
   },
   methods: {
     openEditMemeDialog(index) {
-      this.$modal.show("edit", { memeToEdit: this.memes[index], index });
+      this.$modal.show("edit", { memeToEdit: this.getMemes[index], index });
     },
     selectMemeToEdit(event) {
       this.memeToEditTitle = event.params.memeToEdit.title;
@@ -86,10 +87,13 @@ export default {
         description: this.memeToEditDescription,
         imgUrl: this.memeToEditUrl
       });
+
+      this.$emit("storageUpdate");
     },
     onDelete(index) {
       const storageService = new LocalStorageService();
       storageService.deleteMeme(index);
+      this.$emit("storageUpdate");
     }
   }
 };

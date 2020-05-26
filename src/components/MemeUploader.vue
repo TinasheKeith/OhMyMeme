@@ -48,8 +48,8 @@ export default {
         imgUrl: this.selectedImageUrl,
         description: this.memeDescription
       };
-
       localStorageService.addMeme(newMeme);
+      this.$emit("storageUpdate");
     }
   }
 };
