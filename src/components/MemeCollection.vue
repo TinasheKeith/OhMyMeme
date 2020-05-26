@@ -1,13 +1,14 @@
 <template>
   <div>
     <div class="meme-container" v-if="memes">
+      <v-dialog />
       <app-card :key="meme.title" v-for="meme in memes">
         <div class="card-content">
           <img width="100%" height="150px" :src="meme.imgUrl" />
           <h3 class="card-title">{{ meme.title }}</h3>
           <p class="card-description">{{ meme.description }}</p>
           <div class="card-action">
-            <app-btn>edit</app-btn>
+            <app-btn @click.native="openEditMemeDialog()">edit</app-btn>
           </div>
         </div>
       </app-card>
@@ -19,25 +20,50 @@
 <script>
 import AppCard from "./AppCard";
 import AppBtn from "./AppButton";
+import LocalStorageService from "../services/localStorageService";
 
 export default {
   name: "MemeCollection",
   components: {
     AppCard,
-    AppBtn,
+    AppBtn
   },
   mounted() {
-    let savedMemes = JSON.parse(localStorage.getItem("memes"));
-
-    if (savedMemes) {
-      console.log("saved memes", savedMemes);
-      this.memes = savedMemes;
-    }
+    const storageService = new LocalStorageService();
+    const memes = storageService.getMemes();
+    console.log(memes);
+    this.memes = memes;
   },
   data() {
     return {
-      memes: []
+      memes: [],
+      showDialog: false
     };
+  },
+  methods: {
+    openEditMemeDialog() {
+      console.log("open the dialog");
+      this.$modal.show("dialog", {
+        title: "Edit meme",
+        text: "You are too awesome",
+        buttons: [
+          {
+            title: "Deal with it",
+            handler: () => {
+              alert("Woot!");
+            }
+          },
+          {
+            title: "",
+            default: true,
+            handler: () => {}
+          },
+          {
+            title: "Close"
+          }
+        ]
+      });
+    }
   }
 };
 </script>
