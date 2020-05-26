@@ -26,11 +26,14 @@
 
       <app-card :key="meme.index" v-for="(meme, index) in memes">
         <div class="card-content">
-          <img width="100%" height="150px" :src="meme.imgUrl" />
-          <h3 class="card-title">{{ meme.title }}</h3>
-          <p class="card-description">{{ meme.description }}</p>
-          <div class="card-action">
-            <app-btn @click.native="openEditMemeDialog(index)">edit</app-btn>
+          <img class="card-image" :src="meme.imgUrl" />
+          <div class="content-text">
+            <h3 class="card-title">{{ meme.title }}</h3>
+            <p class="card-description">{{ meme.description }}</p>
+            <div class="card-action">
+              <app-btn @click.native="onDelete(index)">delete</app-btn>
+              <app-btn @click.native="openEditMemeDialog(index)">edit</app-btn>
+            </div>
           </div>
         </div>
       </app-card>
@@ -83,6 +86,10 @@ export default {
         description: this.memeToEditDescription,
         imgUrl: this.memeToEditUrl
       });
+    },
+    onDelete(index) {
+      const storageService = new LocalStorageService();
+      storageService.deleteMeme(index);
     }
   }
 };
@@ -98,6 +105,11 @@ export default {
   width: 100%;
 }
 
+.card-image {
+  width: 250px;
+  height: 150px;
+}
+
 .card-content {
   display: flex;
   flex-direction: column;
@@ -108,12 +120,33 @@ export default {
   margin: 0.5em 0em;
   font-size: 0.7em;
 }
-
 .card-description {
   font-size: 0.5em;
 }
 
+@media screen and (min-width: 600px) {
+  .card-content {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .card-title {
+    margin: 0.5em 0em;
+    font-size: 1em;
+  }
+
+  .card-image {
+    width: 40%;
+    height: 100%;
+  }
+
+  .content-text {
+    margin: 1em;
+  }
+}
+
 .card-action {
+  display: flex;
   position: absolute;
   right: 0;
   bottom: 0;
