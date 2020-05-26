@@ -8,7 +8,7 @@
 
     <img v-if="selectedImageUrl" class="preview-image" width="200px" :src="selectedImageUrl" />
     <input v-model="memeTitle" type="text" class="text-input" placeholder="Meme Title" />
-    <input
+    <textarea
       v-model="memeDescription"
       type="text"
       class="text-input"
@@ -74,19 +74,6 @@ label {
 
 input[type="file"] {
   display: none;
-}
-
-.text-input {
-  width: 360px;
-  margin: auto;
-  background: #fff;
-  font-weight: bold;
-  font: inherit;
-  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.1);
-  border: 0;
-  outline: 0;
-  padding: 15px 18px;
-  margin: 1em 0;
 }
 
 .preview-image {

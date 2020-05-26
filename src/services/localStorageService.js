@@ -18,17 +18,12 @@ class LocalStorageService {
     console.assert("[addMeme] meme should be an object.");
     return null;
   }
+
+  editMeme(position, updatedDetails) {
+    const memes = this.getMemes();
+    memes[position] = updatedDetails;
+    return localStorage.setItem(this.memePath, JSON.stringify(memes));
+  }
 }
-
-// const savedMemes = JSON.parse(localStorage.getItem("memes")) || [];
-// const newMeme = {
-//   title: this.memeTitle,
-//   imgUrl: this.selectedImageUrl,
-//   description: this.memeDescription
-// };
-
-// const updatedMemes = [...savedMemes, newMeme];
-
-// localStorage.setItem("memes", JSON.stringify(updatedMemes));
 
 export default LocalStorageService;
