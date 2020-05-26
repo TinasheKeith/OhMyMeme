@@ -3,6 +3,7 @@
     <AppBar title="Oh. My. Meme! 😲" />
     <AppWrapper>
       <app-meme-uploader />
+      <meme-collection />
     </AppWrapper>
   </div>
 </template>
@@ -11,14 +12,16 @@
 import AppBar from "./components/AppBar";
 // import AppButton from "./components/AppButton";
 import AppWrapper from "./components/AppWrapper";
-import AppMemeUploader from "./components/AppMemeUploader";
+import AppMemeUploader from "./components/MemeUploader";
+import MemeCollection from "./components/MemeCollection";
 
 export default {
   name: "App",
   components: {
     AppBar,
     AppWrapper,
-    AppMemeUploader
+    AppMemeUploader,
+    MemeCollection
   }
 };
 </script>
@@ -41,7 +44,9 @@ body {
 
 .container {
   display: flex;
+  margin: auto;
   flex-direction: column;
+  justify-content: center;
 }
 
 .title {
