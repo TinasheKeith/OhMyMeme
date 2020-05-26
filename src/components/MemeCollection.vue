@@ -74,7 +74,7 @@ export default {
       this.memeToEditDescription = event.params.memeToEdit.description;
       this.memeToEditUrl = event.params.imgUrl;
       this.memeToEditPosition = event.params.index;
-      this.$modal.close("edit");
+      this.$modal.hide("edit");
     },
     onEdit(index) {
       const storageService = new LocalStorageService();
