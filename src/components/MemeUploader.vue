@@ -42,16 +42,13 @@ export default {
     },
     onUpload() {
       const savedMemes = JSON.parse(localStorage.getItem("memes")) || [];
-      console.log("MEME TITLE ***************************", this.memeTitle);
       const newMeme = {
         title: this.memeTitle,
         imgUrl: this.selectedImageUrl,
-        description: this.description
+        description: this.memeDescription
       };
 
       const updatedMemes = [...savedMemes, newMeme];
-
-      console.log("Updated Memes", updatedMemes);
 
       localStorage.setItem("memes", JSON.stringify(updatedMemes));
     }

@@ -4,6 +4,12 @@
   </div>
 </template>
 
+<script>
+export default {
+  //  props: ["title", ]
+};
+</script>
+
 <style scoped>
 .card {
   font: inherit;
@@ -24,5 +30,6 @@
   overflow: hidden;
   border: 3px solid #ccc;
   text-decoration: none;
+  position: relative;
 }
 </style>
