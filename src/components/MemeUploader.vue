@@ -6,25 +6,30 @@
       <input type="file" accept="image/*" size="60" @change="onFileChosen" />
     </label>
     <img v-if="selectedImageUrl" class="preview-image" width="200px" :src="selectedImageUrl" />
-    <app-text-input placeholder="Meme Title" v-model="memeTitle" />
+    <input v-model="memeTitle" type="text" class="text-input" placeholder="Meme Title" />
+    <input
+      v-model="memeDescription"
+      type="text"
+      class="text-input"
+      placeholder="Why is theme Meme funny?"
+    />
+
     <app-text-input placeholder="Why is this Meme funny?" v-model="memeDescription" />
     <app-button @click.native="onUpload()">Houston, we have a meme! 🚀👨‍🚀</app-button>
   </div>
 </template>
 
 <script>
-import AppTextInput from "./AppTextInput";
 import AppButton from "./AppButton";
 
 export default {
-  name: "AppMemeUploader",
+  name: "MemeUploader",
   components: {
-    AppTextInput,
     AppButton
   },
   data() {
     return {
-      selectedImageUrl: null,
+      selectedImageUrl: "",
       memeTitle: "",
       memeDescription: ""
     };
@@ -36,19 +41,16 @@ export default {
       this.selectedImageUrl = imageFileUrl;
     },
     onUpload() {
-      console.log("onUpload ran!!");
-      let savedMemes = [];
-      savedMemes = localStorage.getItem("savedMemes") || [];
+      const savedMemes = JSON.parse(localStorage.getItem("memes")) || [];
+      const newMeme = {
+        title: this.memeTitle,
+        imgUrl: this.selectedImageUrl,
+        description: this.memeDescription
+      };
 
-      savedMemes.push({
-        memeTitle: this.memeTitle,
-        imageUrl: this.selectedImageUrl,
-        memeDescription: this.memeDescription
-      });
+      const updatedMemes = [...savedMemes, newMeme];
 
-      localStorage.setItem("savedMemes", savedMemes);
-
-      console.log(localStorage.getItem("savedMemes"));
+      localStorage.setItem("memes", JSON.stringify(updatedMemes));
     }
   }
 };
@@ -62,6 +64,7 @@ label {
   border: 0;
   outline: 0;
   padding: 0;
+  max-width: 360px;
   cursor: pointer;
   box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1);
   border-radius: 2px;
@@ -72,6 +75,19 @@ label {
 
 input[type="file"] {
   display: none;
+}
+
+.text-input {
+  width: 360px;
+  margin: auto;
+  background: #fff;
+  font-weight: bold;
+  font: inherit;
+  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.1);
+  border: 0;
+  outline: 0;
+  padding: 15px 18px;
+  margin: 1em 0;
 }
 
 .preview-image {

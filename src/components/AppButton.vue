@@ -23,6 +23,7 @@ export default {
   border-radius: 2px;
   padding: 12px 36px;
   font-weight: bold;
+  max-width: 360px;
   font: inherit;
 }
 </style>
