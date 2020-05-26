@@ -5,22 +5,23 @@
       Upload Meme
       <input type="file" accept="image/*" size="60" @change="onFileChosen" />
     </label>
+
     <img v-if="selectedImageUrl" class="preview-image" width="200px" :src="selectedImageUrl" />
     <input v-model="memeTitle" type="text" class="text-input" placeholder="Meme Title" />
-    <input
+    <textarea
       v-model="memeDescription"
       type="text"
       class="text-input"
       placeholder="Why is theme Meme funny?"
     />
 
-    <app-text-input placeholder="Why is this Meme funny?" v-model="memeDescription" />
     <app-button @click.native="onUpload()">Houston, we have a meme! 🚀👨‍🚀</app-button>
   </div>
 </template>
 
 <script>
 import AppButton from "./AppButton";
+import LocalStorageService from "../services/localStorageService.js";
 
 export default {
   name: "MemeUploader",
@@ -41,16 +42,14 @@ export default {
       this.selectedImageUrl = imageFileUrl;
     },
     onUpload() {
-      const savedMemes = JSON.parse(localStorage.getItem("memes")) || [];
+      const localStorageService = new LocalStorageService();
       const newMeme = {
         title: this.memeTitle,
         imgUrl: this.selectedImageUrl,
         description: this.memeDescription
       };
 
-      const updatedMemes = [...savedMemes, newMeme];
-
-      localStorage.setItem("memes", JSON.stringify(updatedMemes));
+      localStorageService.addMeme(newMeme);
     }
   }
 };
@@ -75,19 +74,6 @@ label {
 
 input[type="file"] {
   display: none;
-}
-
-.text-input {
-  width: 360px;
-  margin: auto;
-  background: #fff;
-  font-weight: bold;
-  font: inherit;
-  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.1);
-  border: 0;
-  outline: 0;
-  padding: 15px 18px;
-  margin: 1em 0;
 }
 
 .preview-image {

@@ -1,13 +1,36 @@
 <template>
   <div>
     <div class="meme-container" v-if="memes">
-      <app-card :key="meme.title" v-for="meme in memes">
+      <modal name="edit" @before-open="selectMemeToEdit">
+        <div class="edit-modal">
+          <h3>Edit your meme entry</h3>
+          <!-- <img width="100%" height="150px" :src="meme.imgUrl" /> -->
+          <input
+            v-model="memeToEditTitle"
+            type="text"
+            class="text-input"
+            :placeholder="memeToEditTitle"
+          />
+          <textarea
+            v-model="memeToEditDescription"
+            type="textarea"
+            class="text-input"
+            :placeholder="memeToEditDescription"
+          />
+          <!-- <p class="card-description">{{ meme.description }}</p> -->
+          <div class="card-action">
+            <app-btn @click.native="onEdit(memeToEditPosition)">edit</app-btn>
+          </div>
+        </div>
+      </modal>
+
+      <app-card :key="meme.index" v-for="(meme, index) in memes">
         <div class="card-content">
           <img width="100%" height="150px" :src="meme.imgUrl" />
           <h3 class="card-title">{{ meme.title }}</h3>
           <p class="card-description">{{ meme.description }}</p>
           <div class="card-action">
-            <app-btn>edit</app-btn>
+            <app-btn @click.native="openEditMemeDialog(index)">edit</app-btn>
           </div>
         </div>
       </app-card>
@@ -16,28 +39,51 @@
   </div>
 </template>
 
+
 <script>
 import AppCard from "./AppCard";
 import AppBtn from "./AppButton";
+import LocalStorageService from "../services/localStorageService";
 
 export default {
   name: "MemeCollection",
   components: {
     AppCard,
-    AppBtn,
+    AppBtn
   },
   mounted() {
-    let savedMemes = JSON.parse(localStorage.getItem("memes"));
-
-    if (savedMemes) {
-      console.log("saved memes", savedMemes);
-      this.memes = savedMemes;
-    }
+    const storageService = new LocalStorageService();
+    const memes = storageService.getMemes();
+    this.memes = memes;
   },
   data() {
     return {
-      memes: []
+      memes: [],
+      memeToEditTitle: "",
+      memeToEditDescription: "",
+      memeToEditUrl: "",
+      memeToEditPosition: null
     };
+  },
+  methods: {
+    openEditMemeDialog(index) {
+      this.$modal.show("edit", { memeToEdit: this.memes[index], index });
+    },
+    selectMemeToEdit(event) {
+      this.memeToEditTitle = event.params.memeToEdit.title;
+      this.memeToEditDescription = event.params.memeToEdit.description;
+      this.memeToEditUrl = event.params.imgUrl;
+      this.memeToEditPosition = event.params.index;
+      this.$modal.hide("edit");
+    },
+    onEdit(index) {
+      const storageService = new LocalStorageService();
+      storageService.editMeme(index, {
+        title: this.memeToEditTitle,
+        description: this.memeToEditDescription,
+        imgUrl: this.memeToEditUrl
+      });
+    }
   }
 };
 </script>
@@ -72,5 +118,13 @@ export default {
   right: 0;
   bottom: 0;
   padding: 0.5em;
+}
+
+.edit-modal {
+  background-color: #263238;
+  height: 100%;
+  width: 100%;
+  padding: 1em;
+  position: relative;
 }
 </style>  
