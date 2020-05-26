@@ -3,7 +3,7 @@
     <div class="meme-container" v-if="memes">
       <app-card :key="meme.title" v-for="meme in memes">
         <div class="card-content">
-          <img width="100%" :src="meme.imgUrl" />
+          <img width="100%" height="150px" :src="meme.imgUrl" />
           <h3 class="card-title">{{ meme.title }}</h3>
           <p class="card-description">{{ meme.description }}</p>
           <div class="card-action">
@@ -60,6 +60,7 @@ export default {
 
 .card-title {
   margin: 0.5em 0em;
+  font-size: 0.7em;
 }
 
 .card-description {
