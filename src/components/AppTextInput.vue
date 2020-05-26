@@ -7,7 +7,7 @@
 <script>
 export default {
   name: "AppTextInput",
-  props: ["placeholder"]
+  props: ["placeholder", "file"]
 };
 </script>
 
