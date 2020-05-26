@@ -16,7 +16,7 @@ export default {
   opacity: 0.5;
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
   height: 17em;
-  width: 12em;
+  width: 100%;
   font-size: 1.5em;
   color: white;
   border-radius: 1em;
@@ -32,4 +32,7 @@ export default {
   text-decoration: none;
   position: relative;
 }
+
+
+
 </style>

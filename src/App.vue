@@ -2,8 +2,8 @@
   <div id="app">
     <AppBar title="Oh. My. Meme! 😲" />
     <AppWrapper>
-      <app-meme-uploader />
-      <meme-collection />
+      <app-meme-uploader @storageUpdate="updateStorage" />
+      <meme-collection @storageUpdate="updateStorage" :memes="memes" />
     </AppWrapper>
   </div>
 </template>
@@ -15,6 +15,8 @@ import AppWrapper from "./components/AppWrapper";
 import AppMemeUploader from "./components/MemeUploader";
 import MemeCollection from "./components/MemeCollection";
 
+import LocalStorageService from "./services/localStorageService";
+
 export default {
   name: "App",
   components: {
@@ -22,6 +24,21 @@ export default {
     AppWrapper,
     AppMemeUploader,
     MemeCollection
+  },
+  mounted() {
+    const storageService = new LocalStorageService();
+    this.memes = storageService.getMemes();
+  },
+  data() {
+    return {
+      memes: []
+    };
+  },
+  methods: {
+    updateStorage() {
+      const storageService = new LocalStorageService();
+      this.memes = storageService.getMemes();
+    }
   }
 };
 </script>

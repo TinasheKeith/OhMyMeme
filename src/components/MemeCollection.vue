@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="meme-container" v-if="memes">
+    <div class="meme-container" v-if="getMemes">
       <modal name="edit" @before-open="selectMemeToEdit">
         <div class="edit-modal">
           <h3>Edit your meme entry</h3>
@@ -24,13 +24,16 @@
         </div>
       </modal>
 
-      <app-card :key="meme.index" v-for="(meme, index) in memes">
+      <app-card :key="meme.index" v-for="(meme, index) in getMemes">
         <div class="card-content">
-          <img width="100%" height="150px" :src="meme.imgUrl" />
-          <h3 class="card-title">{{ meme.title }}</h3>
-          <p class="card-description">{{ meme.description }}</p>
-          <div class="card-action">
-            <app-btn @click.native="openEditMemeDialog(index)">edit</app-btn>
+          <img class="card-image" :src="meme.imgUrl" />
+          <div class="content-text">
+            <h3 class="card-title">{{ meme.title }}</h3>
+            <p class="card-description">{{ meme.description }}</p>
+            <div class="card-action">
+              <app-btn @click.native="onDelete(index)">delete</app-btn>
+              <app-btn @click.native="openEditMemeDialog(index)">edit</app-btn>
+            </div>
           </div>
         </div>
       </app-card>
@@ -51,14 +54,15 @@ export default {
     AppCard,
     AppBtn
   },
-  mounted() {
-    const storageService = new LocalStorageService();
-    const memes = storageService.getMemes();
-    this.memes = memes;
+  props: ["memes"],
+  computed: {
+    // to avoid mutating directly
+    getMemes() {
+      return this.memes;
+    }
   },
   data() {
     return {
-      memes: [],
       memeToEditTitle: "",
       memeToEditDescription: "",
       memeToEditUrl: "",
@@ -67,7 +71,7 @@ export default {
   },
   methods: {
     openEditMemeDialog(index) {
-      this.$modal.show("edit", { memeToEdit: this.memes[index], index });
+      this.$modal.show("edit", { memeToEdit: this.getMemes[index], index });
     },
     selectMemeToEdit(event) {
       this.memeToEditTitle = event.params.memeToEdit.title;
@@ -83,6 +87,12 @@ export default {
         description: this.memeToEditDescription,
         imgUrl: this.memeToEditUrl
       });
+      this.$emit("storageUpdate");
+    },
+    onDelete(index) {
+      const storageService = new LocalStorageService();
+      storageService.deleteMeme(index);
+      this.$emit("storageUpdate");
     }
   }
 };
@@ -98,6 +108,11 @@ export default {
   width: 100%;
 }
 
+.card-image {
+  width: 250px;
+  height: 150px;
+}
+
 .card-content {
   display: flex;
   flex-direction: column;
@@ -108,12 +123,33 @@ export default {
   margin: 0.5em 0em;
   font-size: 0.7em;
 }
-
 .card-description {
   font-size: 0.5em;
 }
 
+@media screen and (min-width: 600px) {
+  .card-content {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .card-title {
+    margin: 0.5em 0em;
+    font-size: 1em;
+  }
+
+  .card-image {
+    width: 40%;
+    height: 100%;
+  }
+
+  .content-text {
+    margin: 1em;
+  }
+}
+
 .card-action {
+  display: flex;
   position: absolute;
   right: 0;
   bottom: 0;

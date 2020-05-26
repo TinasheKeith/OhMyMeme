@@ -24,6 +24,22 @@ class LocalStorageService {
     memes[position] = updatedDetails;
     return localStorage.setItem(this.memePath, JSON.stringify(memes));
   }
+
+  deleteMeme(position) {
+    const memes = [...this.getMemes()];
+
+    const removeItemWithSlice = (index) => {
+      const firstArr = memes.slice(0, index);
+      const secondArr = memes.slice(index + 1);
+      return [...firstArr, ...secondArr];
+    };
+
+    console.log("Memes spliced", memes, position);
+    return localStorage.setItem(
+      this.memePath,
+      JSON.stringify(removeItemWithSlice(position))
+    );
+  }
 }
 
 export default LocalStorageService;
