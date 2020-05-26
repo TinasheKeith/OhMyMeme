@@ -2,7 +2,7 @@
   <div id="app">
     <AppBar title="Oh. My. Meme! 😲" />
     <AppWrapper>
-      <!-- <app-button>hi</app-button> -->
+      <app-meme-uploader />
     </AppWrapper>
   </div>
 </template>
@@ -11,13 +11,14 @@
 import AppBar from "./components/AppBar";
 // import AppButton from "./components/AppButton";
 import AppWrapper from "./components/AppWrapper";
+import AppMemeUploader from "./components/AppMemeUploader";
 
 export default {
   name: "App",
   components: {
     AppBar,
-    // AppButton,
-    AppWrapper
+    AppWrapper,
+    AppMemeUploader
   }
 };
 </script>
@@ -36,5 +37,15 @@ body {
   line-height: 1.4;
   color: var(--font-color);
   background-color: var(--background-color);
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 1em;
 }
 </style>

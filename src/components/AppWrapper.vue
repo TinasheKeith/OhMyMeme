@@ -9,5 +9,6 @@
   max-width: 1010px;
   margin: auto;
   display: flex;
+  justify-content: center;
 }
 </style>
