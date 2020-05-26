@@ -87,7 +87,6 @@ export default {
         description: this.memeToEditDescription,
         imgUrl: this.memeToEditUrl
       });
-
       this.$emit("storageUpdate");
     },
     onDelete(index) {

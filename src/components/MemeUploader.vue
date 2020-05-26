@@ -49,6 +49,11 @@ export default {
         description: this.memeDescription
       };
       localStorageService.addMeme(newMeme);
+
+      this.memeTitle = "";
+      this.memeDescription = "";
+      this.selectedImageUrl = "";
+      
       this.$emit("storageUpdate");
     }
   }
