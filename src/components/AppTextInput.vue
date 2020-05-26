@@ -1,13 +1,13 @@
 <template>
   <div>
-    <input type="text" class="text-input" :placeholder="placeholder" />
+    <input :type="file ? file : text" class="text-input" :placeholder="placeholder" />
   </div>
 </template>
 
 <script>
 export default {
   name: "AppTextInput",
-  props: ["placeholder"]
+  props: ["placeholder", "file"]
 };
 </script>
 
