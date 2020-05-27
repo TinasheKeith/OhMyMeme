@@ -10,12 +10,11 @@
 
 <script>
 import AppBar from "./components/AppBar";
-// import AppButton from "./components/AppButton";
 import AppWrapper from "./components/AppWrapper";
 import AppMemeUploader from "./components/MemeUploader";
 import MemeCollection from "./components/MemeCollection";
 
-import LocalStorageService from "./services/localStorageService";
+// import LocalStorageService from "./services/localStorageService";
 import FirestoreService from "./services/firestoreService.js";
 
 export default {
@@ -36,9 +35,9 @@ export default {
     };
   },
   methods: {
-    updateStorage() {
-      const storageService = new LocalStorageService();
-      this.memes = storageService.getMemes();
+    async updateStorage() {
+      const firestoreService = new FirestoreService();
+      this.memes = await firestoreService.getMemes();
     }
   }
 };
