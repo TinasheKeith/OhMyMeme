@@ -16,8 +16,9 @@ class FirestoreService {
   }
 
   async getMemes() {
-    const memes = await this.memesCollection.get();
-    console.log(memes.data());
+    const { docs } = await this.memesCollection.get();
+    const memes = [];
+    docs.forEach((doc) => memes.push(doc.data()));
     return memes;
   }
 }

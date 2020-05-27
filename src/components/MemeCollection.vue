@@ -57,8 +57,8 @@ export default {
   },
   props: ["memes"],
   computed: {
-    // to avoid mutating directly
     getMemes() {
+      console.log(this.memes);
       return this.memes;
     }
   },

@@ -26,9 +26,9 @@ export default {
     AppMemeUploader,
     MemeCollection
   },
-  mounted() {
+  async created() {
     const firestoreService = new FirestoreService();
-    this.memes = firestoreService.getMemes();
+    this.memes = await firestoreService.getMemes();
   },
   data() {
     return {
