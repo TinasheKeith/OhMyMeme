@@ -26,7 +26,7 @@
 
       <app-card :key="meme.index" v-for="(meme, index) in getMemes">
         <div class="card-content">
-          <img class="card-image" :src="meme.imgUrl" />
+          <img class="card-image" :src="getImage(meme.imageUrl)" />
           <div class="content-text">
             <h3 class="card-title">{{ meme.title }}</h3>
             <p class="card-description">{{ meme.description }}</p>
@@ -46,7 +46,7 @@
 <script>
 import AppCard from "./AppCard";
 import AppBtn from "./AppButton";
-// import LocalStorageService from "../services/localStorageService";
+import axios from "axios";
 import FirestoreService from "../services/firestoreService";
 
 export default {
@@ -74,6 +74,13 @@ export default {
     openEditMemeDialog(index) {
       this.$modal.show("edit", { memeToEdit: this.getMemes[index], index });
     },
+    async getImage(url) {
+      try {
+        return axios.get(url);
+      } catch (e) {
+        console.log(e);
+      }
+    },
     selectMemeToEdit(event) {
       this.memeToEditTitle = event.params.memeToEdit.title;
       this.memeToEditDescription = event.params.memeToEdit.description;
@@ -84,7 +91,6 @@ export default {
     async onEdit(index) {
       const firestoreService = new FirestoreService();
       const selectedMemeId = this.getMemes[index].id;
-      console.log("SELECTED", this.selectedMemeId);
       await firestoreService.editMeme(selectedMemeId, {
         title: this.memeToEditTitle,
         description: this.memeToEditDescription

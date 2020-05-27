@@ -1,3 +1,5 @@
+import firebase from "firebase/app";
+import "firebase/storage";
 import { db } from "../firebase";
 
 class FirestoreService {
@@ -6,12 +8,34 @@ class FirestoreService {
   async uploadMeme(newMeme) {
     if (typeof newMeme == "object") {
       try {
+        let imageRef;
+
+        if (newMeme.imageFile) {
+          imageRef = await this.addImageToCloudStorage(newMeme.imageFile);
+          console.log("MY IMAGEREF", imageRef);
+        }
+
         console.log("uploading meme", newMeme);
-        return await this.memesCollection.add(newMeme);
+        return await this.memesCollection.add({
+          title: newMeme.title,
+          description: newMeme.description,
+          imageUrl: imageRef,
+        });
       } catch (e) {
         console.log(e);
         return null;
       }
+    }
+  }
+
+  async addImageToCloudStorage(file) {
+    try {
+      const storageRef = firebase.storage().ref(`meme-images/${file.name}`);
+
+      return await (await storageRef.put(file)).ref.getDownloadURL();
+    } catch (e) {
+      console.log(e);
+      return null;
     }
   }
 

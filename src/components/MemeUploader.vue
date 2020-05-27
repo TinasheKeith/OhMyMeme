@@ -5,13 +5,12 @@
       Upload Meme
       <input type="file" accept="image/*" size="60" @change="onFileChosen" />
     </label>
-
     <img
-      v-if="selectedImageUrl"
+      v-if="imageFile"
       id="memeImage"
       class="preview-image"
       width="200px"
-      :src="selectedImageUrl"
+      :src="getImageFileUrl()"
     />
     <input v-model="memeTitle" type="text" class="text-input" placeholder="Meme Title" />
     <textarea
@@ -36,32 +35,37 @@ export default {
   },
   data() {
     return {
-      selectedImageUrl: "",
+      imageFile: "",
       memeTitle: "",
-      memeDescription: ""
+      memeDescription: "",
+      imageFileUrl: "" // for image preview after upload from file system
     };
   },
   methods: {
     onFileChosen(e) {
       const imageFile = e.target.files[0];
-      const imageFileUrl = URL.createObjectURL(imageFile);
-      this.selectedImageUrl = imageFileUrl;
+      this.imageFile = imageFile;
     },
     async onUpload() {
       const firestoreService = new FirestoreService();
 
       const newMeme = {
         title: this.memeTitle,
-        description: this.memeDescription
+        description: this.memeDescription,
+        imageFile: this.imageFile
       };
 
       await firestoreService.uploadMeme(newMeme);
 
       this.memeTitle = "";
       this.memeDescription = "";
-      this.selectedImageUrl = "";
+      this.imageFile = "";
 
       this.$emit("storageUpdate");
+    },
+    getImageFileUrl() {
+      const imageFileUrl = URL.createObjectURL(this.imageFile);
+      return imageFileUrl;
     }
   }
 };

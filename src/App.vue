@@ -14,7 +14,6 @@ import AppWrapper from "./components/AppWrapper";
 import AppMemeUploader from "./components/MemeUploader";
 import MemeCollection from "./components/MemeCollection";
 
-// import LocalStorageService from "./services/localStorageService";
 import FirestoreService from "./services/firestoreService.js";
 
 export default {
