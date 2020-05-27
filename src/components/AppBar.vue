@@ -20,6 +20,16 @@ export default {
   margin-bottom: 2em;
 }
 
+@media screen and (max-width: 700px) {
+  .appbar {
+    display: flex;
+    flex-direction: row;
+    height: 2em;
+    padding: 10px;
+    margin-bottom: 2em;
+  }
+}
+
 .appbar-title {
   font-size: 1.5em;
 }

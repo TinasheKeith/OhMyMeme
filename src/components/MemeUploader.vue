@@ -5,6 +5,7 @@
       Upload Meme
       <input type="file" accept="image/*" size="60" @change="onFileChosen" />
     </label>
+
     <img
       v-if="imageFile"
       id="memeImage"
@@ -46,6 +47,7 @@ export default {
       const imageFile = e.target.files[0];
       this.imageFile = imageFile;
     },
+
     async onUpload() {
       const firestoreService = new FirestoreService();
 
