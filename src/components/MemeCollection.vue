@@ -26,7 +26,7 @@
 
       <app-card :key="meme.index" v-for="(meme, index) in getMemes">
         <div class="card-content">
-          <img class="card-image" :src="getImage(meme.imageUrl)" />
+          <img class="card-image" :src="meme.imageUrl" />
           <div class="content-text">
             <h3 class="card-title">{{ meme.title }}</h3>
             <p class="card-description">{{ meme.description }}</p>
@@ -58,7 +58,6 @@ export default {
   props: ["memes"],
   computed: {
     getMemes() {
-      console.log(this.memes);
       return this.memes;
     }
   },
@@ -148,7 +147,7 @@ export default {
   }
 
   .card-image {
-    width: 40%;
+    width: 50%;
     height: 100%;
   }
 
