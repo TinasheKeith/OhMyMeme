@@ -12,4 +12,14 @@
   justify-content: center;
   flex-direction: column;
 }
+
+@media screen and (max-width: 700px) {
+  .wrapper {
+    max-width: 90%;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+}
 </style>
