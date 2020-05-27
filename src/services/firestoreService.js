@@ -16,10 +16,39 @@ class FirestoreService {
   }
 
   async getMemes() {
-    const { docs } = await this.memesCollection.get();
-    const memes = [];
-    docs.forEach((doc) => memes.push(doc.data()));
-    return memes;
+    try {
+      const { docs } = await this.memesCollection.get();
+      const memes = [];
+      docs.forEach((doc) => {
+        const { id } = doc;
+
+        memes.push({
+          id,
+          ...doc.data(),
+        });
+      });
+      this.dbMemes = memes;
+      return memes;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async deleteMeme(id) {
+    try {
+      return await this.memesCollection.doc(id).delete();
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async editMeme(id, updatedMeme) {
+    try {
+      return await this.memesCollection.doc(id).update({ ...updatedMeme });
+    } catch (e) {
+      console.log(e);
+      return null;
+    }
   }
 }
 

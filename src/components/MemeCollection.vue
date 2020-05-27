@@ -46,8 +46,8 @@
 <script>
 import AppCard from "./AppCard";
 import AppBtn from "./AppButton";
-import LocalStorageService from "../services/localStorageService";
-// import FirebaseService from "../services/firestoreService";
+// import LocalStorageService from "../services/localStorageService";
+import FirestoreService from "../services/firestoreService";
 
 export default {
   name: "MemeCollection",
@@ -81,18 +81,20 @@ export default {
       this.memeToEditPosition = event.params.index;
       this.$modal.hide("edit");
     },
-    onEdit(index) {
-      const storageService = new LocalStorageService();
-      storageService.editMeme(index, {
+    async onEdit(index) {
+      const firestoreService = new FirestoreService();
+      const selectedMemeId = this.getMemes[index].id;
+      console.log("SELECTED", this.selectedMemeId);
+      await firestoreService.editMeme(selectedMemeId, {
         title: this.memeToEditTitle,
-        description: this.memeToEditDescription,
-        imgUrl: this.memeToEditUrl
+        description: this.memeToEditDescription
       });
       this.$emit("storageUpdate");
     },
     onDelete(index) {
-      const storageService = new LocalStorageService();
-      storageService.deleteMeme(index);
+      const firebaseService = new FirestoreService();
+      const selectedMemeId = this.getMemes[index].id;
+      firebaseService.deleteMeme(selectedMemeId);
       this.$emit("storageUpdate");
     }
   }
