@@ -11,11 +11,14 @@ class FirestoreService {
         let imageRef;
 
         if (newMeme.imageFile) {
-          imageRef = await this.addImageToCloudStorage(newMeme.imageFile);
-          console.log("MY IMAGEREF", imageRef);
+          // checking to if param is image or file
+          if (typeof newMeme.imageFile.name == "string") {
+            imageRef = await this.addFileToCloudStorage(newMeme.imageFile);
+          } else {
+            imageRef = newMeme.imageFile;
+          }
         }
 
-        console.log("uploading meme", newMeme);
         return await this.memesCollection.add({
           title: newMeme.title,
           description: newMeme.description,
@@ -28,7 +31,7 @@ class FirestoreService {
     }
   }
 
-  async addImageToCloudStorage(file) {
+  async addFileToCloudStorage(file) {
     try {
       const storageRef = firebase.storage().ref(`meme-images/${file.name}`);
 

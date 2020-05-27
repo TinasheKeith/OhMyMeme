@@ -1,24 +1,26 @@
 <template>
   <div class="container">
-    <h3 class="title">Add a new meme 🆕</h3>
+    <h3 class="title">Add a new meme</h3>
     <label>
       Upload Meme
       <input type="file" accept="image/*" size="60" @change="onFileChosen" />
     </label>
+
+    <app-button @click.native="onGenerateMeme()">I'm feeling lucky!</app-button>
 
     <img
       v-if="imageFile"
       id="memeImage"
       class="preview-image"
       width="200px"
-      :src="getImageFileUrl()"
+      :src="imageFile.name ? getImageFileUrl() : imageFile"
     />
     <input v-model="memeTitle" type="text" class="text-input" placeholder="Meme Title" />
     <textarea
       v-model="memeDescription"
       type="text"
       class="text-input"
-      placeholder="Why is theme Meme funny?"
+      placeholder="Why is this Meme funny?"
     />
 
     <app-button @click.native="onUpload()">Houston, we have a meme! 🚀👨‍🚀</app-button>
@@ -28,6 +30,7 @@
 <script>
 import AppButton from "./AppButton";
 import FirestoreService from "../services/firestoreService.js";
+import axios from "axios";
 
 export default {
   name: "MemeUploader",
@@ -47,7 +50,11 @@ export default {
       const imageFile = e.target.files[0];
       this.imageFile = imageFile;
     },
-
+    async onGenerateMeme() {
+      let response = await axios.get("https://api.imgflip.com/get_memes");
+      const num = Math.floor(Math.random() * 100) + 1;
+      this.imageFile = response.data.data.memes[num].url;
+    },
     async onUpload() {
       const firestoreService = new FirestoreService();
 
@@ -65,6 +72,7 @@ export default {
 
       this.$emit("storageUpdate");
     },
+    onUploadRandomImage() {},
     getImageFileUrl() {
       const imageFileUrl = URL.createObjectURL(this.imageFile);
       return imageFileUrl;
