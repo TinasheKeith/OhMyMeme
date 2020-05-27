@@ -47,6 +47,7 @@
 import AppCard from "./AppCard";
 import AppBtn from "./AppButton";
 import LocalStorageService from "../services/localStorageService";
+// import FirebaseService from "../services/firestoreService";
 
 export default {
   name: "MemeCollection",

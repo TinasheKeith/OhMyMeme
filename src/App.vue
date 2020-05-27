@@ -16,6 +16,7 @@ import AppMemeUploader from "./components/MemeUploader";
 import MemeCollection from "./components/MemeCollection";
 
 import LocalStorageService from "./services/localStorageService";
+import FirestoreService from "./services/firestoreService.js";
 
 export default {
   name: "App",
@@ -26,8 +27,8 @@ export default {
     MemeCollection
   },
   mounted() {
-    const storageService = new LocalStorageService();
-    this.memes = storageService.getMemes();
+    const firestoreService = new FirestoreService();
+    this.memes = firestoreService.getMemes();
   },
   data() {
     return {

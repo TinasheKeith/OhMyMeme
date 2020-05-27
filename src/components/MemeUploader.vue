@@ -6,7 +6,13 @@
       <input type="file" accept="image/*" size="60" @change="onFileChosen" />
     </label>
 
-    <img v-if="selectedImageUrl" class="preview-image" width="200px" :src="selectedImageUrl" />
+    <img
+      v-if="selectedImageUrl"
+      id="memeImage"
+      class="preview-image"
+      width="200px"
+      :src="selectedImageUrl"
+    />
     <input v-model="memeTitle" type="text" class="text-input" placeholder="Meme Title" />
     <textarea
       v-model="memeDescription"
@@ -21,7 +27,7 @@
 
 <script>
 import AppButton from "./AppButton";
-import LocalStorageService from "../services/localStorageService.js";
+import FirestoreService from "../services/firestoreService.js";
 
 export default {
   name: "MemeUploader",
@@ -41,19 +47,20 @@ export default {
       const imageFileUrl = URL.createObjectURL(imageFile);
       this.selectedImageUrl = imageFileUrl;
     },
-    onUpload() {
-      const localStorageService = new LocalStorageService();
+    async onUpload() {
+      const firestoreService = new FirestoreService();
+
       const newMeme = {
         title: this.memeTitle,
-        imgUrl: this.selectedImageUrl,
         description: this.memeDescription
       };
-      localStorageService.addMeme(newMeme);
+
+      await firestoreService.uploadMeme(newMeme);
 
       this.memeTitle = "";
       this.memeDescription = "";
       this.selectedImageUrl = "";
-      
+
       this.$emit("storageUpdate");
     }
   }
